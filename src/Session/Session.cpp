@@ -6,11 +6,28 @@ bool LCU::Session::Init(std::string gameDir) {
     
     if (!clientConnectionData.valid) {
         LCU::Log::Out(LCU::Log::FATAL, LCU::Log::LogActivity::INIT, "Invalid game directory provided.");
-        return;
+        return false;
     }
+
+    return true;
 }
 
-LCU::Lockfile LCU::Session::GetLockfileFromFile(std::string file = "lockfile") {
+CURL* LCU::Session::GetCURLInstance()
+{
+    // Get current thread ID
+    std::thread::id currThread = std::this_thread::get_id();
+    for (int i = 0; i < byThreadCurl.size(); i++) {
+        if (byThreadCurl[i].second == currThread)
+            return byThreadCurl[i].first; // Found corresponding cURL instance
+    }
+
+    // No instance found, create new one
+    CURL* curl = curl_easy_init();
+    byThreadCurl.push_back(std::pair<CURL*, std::thread::id>(curl, currThread));
+    return byThreadCurl.back().first;
+}
+
+LCU::Lockfile LCU::Session::GetLockfileFromFile(std::string file) {
     std::ifstream lockfile(file);
     std::vector<std::string> lockfileSplitArray;
 
