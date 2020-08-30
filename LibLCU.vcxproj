@@ -75,24 +75,30 @@
     <OutDir>.\bin\win32</OutDir>
     <TargetName>liblcu_d</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\vcpkg\installed\x86-windows\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>.\bin\win32</OutDir>
     <TargetName>liblcu</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>.\bin\win64</OutDir>
     <TargetName>liblcu_d</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>.\bin\win64</OutDir>
     <TargetName>liblcu</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,12 +165,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\League\Chat\LolChat.h" />
+    <ClInclude Include="src\League\Class\Chat\LolChatUserResource.h" />
     <ClInclude Include="src\Network\HTTP\HTTP.hpp" />
     <ClInclude Include="src\liblcu.hpp" />
     <ClInclude Include="src\Output\Logging.hpp" />
     <ClInclude Include="src\Session\Session.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\League\Chat\LolChat.cpp" />
     <ClCompile Include="src\Network\HTTP\GET.cpp" />
     <ClCompile Include="src\liblcu.cpp" />
     <ClCompile Include="src\Network\HTTP\HTTP.cpp" />

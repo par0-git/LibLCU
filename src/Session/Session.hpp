@@ -21,16 +21,15 @@ namespace LCU {
     public:
         bool Init(std::string gameDir);
         CURL* GetCURLInstance();
+        Lockfile GetLockfileFromFile(std::string file = "lockfile");
 
+        // Information for connecting to the back-end client server.  
+        Lockfile clientConnectionData;
     private:
         // Where the default client is stored.
         std::string gameDirectory;
 
-        // Information for connecting to the back-end client server.  
-        Lockfile clientConnectionData;
-
         // CURL instances (by thread).
         std::vector<std::pair<CURL*, std::thread::id>> byThreadCurl;
-        Lockfile GetLockfileFromFile(std::string file = "lockfile");
     };
 };

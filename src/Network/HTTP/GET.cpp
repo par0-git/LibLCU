@@ -37,9 +37,10 @@ std::basic_string<unsigned char>* LCU::Network::HTTP::Buffer::GetBuffer_GET_Writ
 	return GetBuffer_GET_WriteCallback(curl, false);
 }
 
-void LCU::Network::HTTP::GetBare(CURL* curl, std::string url, void* writeCallback, void* writeData)
+void LCU::Network::HTTP::GetBare(Session* session, std::string url, void* writeCallback, void* writeData)
 {
-	LCU::Network::HTTP::Init(curl, url);
+	CURL* curl = session->GetCURLInstance();
+	LCU::Network::HTTP::Init(curl, session, url);
 
 	if (!curl) {
 		LCU::Log::Out(LCU::Log::LogLevel::WARNING, LCU::Log::LogActivity::HTTP, "Provided CURL object is NULL. GET failed.");
@@ -63,8 +64,10 @@ void LCU::Network::HTTP::GetBare(CURL* curl, std::string url, void* writeCallbac
 		LCU::Log::Out(LCU::Log::LogLevel::WARNING, LCU::Log::LogActivity::HTTP, "GET request failed. (%i)", result);
 }
 
-std::basic_string<unsigned char> LCU::Network::HTTP::Get(CURL* curl, std::string url)
+std::basic_string<unsigned char> LCU::Network::HTTP::Get(Session* session, std::string url)
 {
+	CURL* curl = session->GetCURLInstance();
+
 	// Get buffer
 	std::basic_string<unsigned char>* buffer = Buffer::GetBuffer_GET_WriteCallback(curl);
 	if (!buffer) {
@@ -76,7 +79,7 @@ std::basic_string<unsigned char> LCU::Network::HTTP::Get(CURL* curl, std::string
 	buffer->clear();
 	
 	// Start GET request
-	GetBare(curl, url, &Buffer::GET_WriteCallback, buffer);
+	GetBare(session, url, &Buffer::GET_WriteCallback, buffer);
 
 	// Return buffer
 	return *buffer;
