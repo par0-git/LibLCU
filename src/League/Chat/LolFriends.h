@@ -5,13 +5,14 @@
 #include <vector>
 #include <thread>
 #include "../../Session/Session.hpp"
-#include "../Class/Chat/LolChatUserResource.h"
+#include "../Class/Chat/LolChatFriendResource.h"
 
 namespace LCU {
     namespace League {
         namespace Chat {
-            Class::Chat::LolChatUserResource GetMe(Session* session);
-            void SetMe(Session* session, Class::Chat::LolChatUserResource user);
+            namespace Friends {
+                std::vector<Class::Chat::LolChatFriendResource> GetFriends(Session* session);
+            }
         }
     }
 };

@@ -13,6 +13,7 @@ namespace LCU {
 		enum LogActivity {
 			HTTP,
 			INIT,
+			CLASS_CREATION,
 		};
 		
 		extern LogLevel logLevels[sizeof(LogActivity)];

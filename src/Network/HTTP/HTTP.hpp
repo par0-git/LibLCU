@@ -9,8 +9,10 @@ namespace LCU {
 	namespace Network {
 		namespace HTTP {
 			void GetBare(Session* session, std::string url, void* writeCallback, void* writeData);
+			
+			void Post(Session* session, std::string url, std::string data);
+			void Put(Session* session, std::string url, std::string data);
 			std::basic_string<unsigned char> Get(Session* session, std::string url);
-
 			void Init(CURL* curl, Session* session, std::string url);
 
 			namespace Buffer {

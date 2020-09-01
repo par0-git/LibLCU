@@ -18,6 +18,10 @@ void LCU::Network::HTTP::Init(CURL* curl, Session* session, std::string url)
 	headers = curl_slist_append(headers, "Content-Type: application/json");
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
+	// Reset the CURL object
+	curl_easy_setopt(curl, CURLOPT_POST, 0L);
+	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
+
 	// Skip cert verification
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 

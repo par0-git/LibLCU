@@ -166,7 +166,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\League\Chat\LolChat.h" />
+    <ClInclude Include="src\League\Chat\LolFriends.h" />
+    <ClInclude Include="src\League\Loot\LolLoot.h" />
+    <ClInclude Include="src\League\Class\Chat\LolChatFriendResource.h" />
     <ClInclude Include="src\League\Class\Chat\LolChatUserResource.h" />
+    <ClInclude Include="src\League\Class\LolClass.h" />
+    <ClInclude Include="src\League\Class\Loot\LolLootItemOwnershipStatus.h" />
+    <ClInclude Include="src\League\Class\Loot\LolLootPlayerLoot.h" />
+    <ClInclude Include="src\League\Class\Loot\LolLootRedeemableStatus.h" />
     <ClInclude Include="src\Network\HTTP\HTTP.hpp" />
     <ClInclude Include="src\liblcu.hpp" />
     <ClInclude Include="src\Output\Logging.hpp" />
@@ -174,9 +181,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\League\Chat\LolChat.cpp" />
+    <ClCompile Include="src\League\Chat\LolFriends.cpp" />
+    <ClCompile Include="src\League\Loot\LolLoot.cpp" />
     <ClCompile Include="src\Network\HTTP\GET.cpp" />
     <ClCompile Include="src\liblcu.cpp" />
     <ClCompile Include="src\Network\HTTP\HTTP.cpp" />
+    <ClCompile Include="src\Network\HTTP\POST.cpp" />
+    <ClCompile Include="src\Network\HTTP\PUT.cpp" />
     <ClCompile Include="src\Output\Logging.cpp" />
     <ClCompile Include="src\Session\Session.cpp" />
   </ItemGroup>
