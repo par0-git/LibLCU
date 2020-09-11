@@ -1,5 +1,15 @@
+/*
+    LibLCU,
+    2020 - par0-git
+    Class / LolBaseClass
+
+    This class is the parent of all the class definitions.
+*/
+
 #pragma once
 #include <nlohmann/json.hpp>
+#include <string>
+#include <vector>
 #include "../../Output/Logging.hpp"
 #include "../../Network/HTTP/HTTP.hpp"
 
@@ -20,7 +30,8 @@ namespace LCU {
         namespace Class {
             // Object base class
             class LolBaseClass {
-
+            public:
+                virtual const char* GetClassName() = 0;
             };
         }
     }

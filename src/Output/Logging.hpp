@@ -14,6 +14,7 @@ namespace LCU {
 			HTTP,
 			INIT,
 			CLASS_CREATION,
+			INVALID_INPUT
 		};
 		
 		extern LogLevel logLevels[sizeof(LogActivity)];

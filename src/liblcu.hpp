@@ -1,6 +1,4 @@
 #pragma once
-#include "Network/HTTP/HTTP.hpp"
 #include "League/Chat/LolChat.h"
-namespace ClientLib {
-	void Hello();
-}
+#include "League/Chat/LolFriends.h"
+#include "League/Loot/LolLoot.h"

@@ -1,3 +1,9 @@
+/*
+    LibLCU,
+    2020 - par0-git
+    Class / LolLootPlayerLoot << LolBaseClass
+*/
+
 #pragma once
 #include "../LolClass.h"
 #include "LolLootItemOwnershipStatus.h"
@@ -46,8 +52,8 @@ namespace LCU {
                     bool isNew,
                         isRental;
 
-                    static void FromJSON(LolLootPlayerLoot& loot_item, nlohmann::json input) {
-                        try JSON_CLASS_BEGIN(input, loot_item);
+                    static void FromJSON(LolLootPlayerLoot& item, nlohmann::json input) {
+                        try JSON_CLASS_BEGIN(input, item);
                             JSON_TO_CLASS_MEMBER(["lootName"], lootName);
                             JSON_TO_CLASS_MEMBER(["lootId"], lootId);
                             JSON_TO_CLASS_MEMBER(["refId"], refId);
@@ -82,15 +88,11 @@ namespace LCU {
                             JSON_TO_CLASS_MEMBER(["isNew"], isNew);
                             JSON_TO_CLASS_MEMBER(["isRental"], isRental);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a LolLootPlayerLoot class. (%s)", e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s class. (%s)", item.GetClassName(), e.what());
                         };
                     }
 
                     nlohmann::json ToJSON() {
-                        return LLPL_ToBaseJSON();
-                    }
-
-                    nlohmann::json LLPL_ToBaseJSON() {
                         nlohmann::json output;
                         try JSON_CLASS_BEGIN(output, *this);
                             JSON_FROM_CLASS_MEMBER(["lootName"], lootName);
@@ -127,9 +129,13 @@ namespace LCU {
                             JSON_FROM_CLASS_MEMBER(["isNew"], isNew);
                             JSON_FROM_CLASS_MEMBER(["isRental"], isRental);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a LolLootPlayerLoot json. (%s)", e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s json object. (%s)", GetClassName(), e.what());
                         };
                         return output;
+                    }
+
+                    const char* GetClassName() {
+                        return "LolLootPlayerLoot";
                     }
                 };
             }

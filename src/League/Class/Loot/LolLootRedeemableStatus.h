@@ -1,10 +1,16 @@
+/*
+    LibLCU,
+    2020 - par0-git
+    Enum / LolLootRedeemableStatus
+*/
+
 #pragma once
 
 namespace LCU {
     namespace League {
         namespace Class {
             namespace Loot {
-                enum LolLootRedeemableStatus {
+                enum class LolLootRedeemableStatus {
                     UNKNOWN,
                     REDEEMABLE,
                     REDEEMABLE_RENTAL,

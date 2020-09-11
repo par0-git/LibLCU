@@ -1,3 +1,9 @@
+/*
+    LibLCU,
+    2020 - par0-git
+    Class / LolChatUserResource << LolBaseClass
+*/
+
 #pragma once
 #include "../LolClass.h"
 
@@ -45,15 +51,11 @@ namespace LCU {
                             JSON_TO_CLASS_MEMBER(["statusMessage"], statusMessage);
                             JSON_TO_CLASS_MEMBER(["lastSeenOnlineTimestamp"], lastSeenOnlineTimestamp);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a LolChatUserResource class. (%s)", e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s class. (%s)", user.GetClassName(), e.what());
                         };
                     }
                     
                     nlohmann::json ToJSON() {
-                        return LCUR_ToBaseJSON();
-                    }
-
-                    nlohmann::json LCUR_ToBaseJSON() {
                         nlohmann::json output;
                         try JSON_CLASS_BEGIN(output, *this);
                             JSON_FROM_CLASS_MEMBER(["summonerId"], summonerId);
@@ -74,9 +76,13 @@ namespace LCU {
                             JSON_FROM_CLASS_MEMBER(["statusMessage"], statusMessage);
                             JSON_FROM_CLASS_MEMBER(["lastSeenOnlineTimestamp"], lastSeenOnlineTimestamp);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a LolChatUserResource json. (%s)", e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s json object. (%s)", GetClassName(), e.what());
                         };
                         return output;
+                    }
+
+                    const char* GetClassName() {
+                        return "LolChatUserResource";
                     }
                 };
             }

@@ -1,3 +1,9 @@
+/*
+    LibLCU,
+    2020 - par0-git
+    Class / LolChatFriendResource << LolChatUserResource << LolBaseClass
+*/
+
 #pragma once
 #include "LolChatUserResource.h"
 
@@ -24,16 +30,12 @@ namespace LCU {
                             JSON_TO_CLASS_MEMBER(["groupName"], groupName);
                             JSON_TO_CLASS_MEMBER(["displayGroupName"], displayGroupName);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a LolChatFriendResource class. (%s)", e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s class. (%s)", user.GetClassName(), e.what());
                         };
                     }
 
                     nlohmann::json ToJSON() {
-                        return LCFR_ToBaseJSON();
-                    }
-
-                    nlohmann::json LCFR_ToBaseJSON() {
-                        nlohmann::json output = LCUR_ToBaseJSON();
+                        nlohmann::json output = LolChatUserResource::ToJSON();
 
                         try JSON_CLASS_BEGIN(output, *this);
                             JSON_FROM_CLASS_MEMBER(["isP2PConversationMuted"], isP2PConversationMuted);
@@ -42,9 +44,13 @@ namespace LCU {
                             JSON_FROM_CLASS_MEMBER(["groupName"], groupName);
                             JSON_FROM_CLASS_MEMBER(["displayGroupName"], displayGroupName);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a LolChatFriendResource json. (%s)", e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s json object. (%s)", GetClassName(), e.what());
                         };
                         return output;
+                    }
+
+                    const char* GetClassName() {
+                        return "LolChatFriendResource";
                     }
                 };
             }

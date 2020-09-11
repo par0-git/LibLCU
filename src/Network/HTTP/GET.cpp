@@ -21,7 +21,7 @@ void LCU::Network::HTTP::Buffer::CreateBuffer_GET_WriteCallback(CURL* curl)
 std::basic_string<unsigned char>* LCU::Network::HTTP::Buffer::GetBuffer_GET_WriteCallback(CURL* curl, bool repeatOnFail)
 {
 	// Loop backwards to get newer buffers first
-	for (int i = bfGET.size() - 1; i >= 0; i--) {
+	for (int i = (int)bfGET.size() - 1; i >= 0; i--) {
 		if (bfGET[i].second == curl)
 			return &bfGET[i].first;
 	}
