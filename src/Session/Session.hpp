@@ -19,7 +19,17 @@ namespace LCU {
 	
     class Session {
     public:
+        Session(std::string gameDir) {
+            Init(gameDir);
+        }
+
+        ~Session() {
+            Disconnect();
+        }
+        
         bool Init(std::string gameDir);
+        bool Disconnect();
+
         CURL* GetCURLInstance();
         Lockfile GetLockfileFromFile(std::string file = "lockfile");
 

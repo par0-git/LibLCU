@@ -184,7 +184,6 @@
     <ClCompile Include="src\League\Chat\LolFriends.cpp" />
     <ClCompile Include="src\League\Loot\LolLoot.cpp" />
     <ClCompile Include="src\Network\HTTP\GET.cpp" />
-    <ClCompile Include="src\liblcu.cpp" />
     <ClCompile Include="src\Network\HTTP\HTTP.cpp" />
     <ClCompile Include="src\Network\HTTP\POST.cpp" />
     <ClCompile Include="src\Network\HTTP\PUT.cpp" />
