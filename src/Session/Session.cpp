@@ -12,6 +12,13 @@ bool LCU::Session::Init(std::string gameDir) {
     return true;
 }
 
+bool LCU::Session::Disconnect() {
+    // Clean up cURL objects
+    byThreadCurl.clear();
+
+    // This function should disconnect from the WebSocket server!!!
+}
+
 CURL* LCU::Session::GetCURLInstance()
 {
     // Get current thread ID
