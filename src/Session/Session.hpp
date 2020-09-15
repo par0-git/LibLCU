@@ -19,11 +19,14 @@ namespace LCU {
 	
     class Session {
     public:
+        Session() {}
+
         Session(std::string gameDir) {
             Init(gameDir);
         }
 
         ~Session() {
+            active = false;
             Disconnect();
         }
         
@@ -36,6 +39,9 @@ namespace LCU {
         // Information for connecting to the back-end client server.  
         Lockfile clientConnectionData;
     private:
+        // Activity.
+        bool active = false;
+
         // Where the default client is stored.
         std::string gameDirectory;
 

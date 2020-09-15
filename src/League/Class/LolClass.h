@@ -31,7 +31,7 @@ namespace LCU {
             // Object base class
             class LolBaseClass {
             public:
-                virtual const char* GetClassName() = 0;
+                virtual const char* GetClassReadableName() = 0;
             };
         }
     }

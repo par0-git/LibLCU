@@ -17,6 +17,7 @@ bool LCU::Session::Disconnect() {
     byThreadCurl.clear();
 
     // This function should disconnect from the WebSocket server!!!
+    return true;
 }
 
 CURL* LCU::Session::GetCURLInstance()

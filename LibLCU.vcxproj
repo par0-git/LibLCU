@@ -167,6 +167,8 @@
   <ItemGroup>
     <ClInclude Include="src\League\Chat\LolChat.h" />
     <ClInclude Include="src\League\Chat\LolFriends.h" />
+    <ClInclude Include="src\League\Class\Client\BasicSystemInfo.h" />
+    <ClInclude Include="src\League\Client\RiotClient.h" />
     <ClInclude Include="src\League\Loot\LolLoot.h" />
     <ClInclude Include="src\League\Class\Chat\LolChatFriendResource.h" />
     <ClInclude Include="src\League\Class\Chat\LolChatUserResource.h" />
@@ -182,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="src\League\Chat\LolChat.cpp" />
     <ClCompile Include="src\League\Chat\LolFriends.cpp" />
+    <ClCompile Include="src\League\Client\RiotClient.cpp" />
     <ClCompile Include="src\League\Loot\LolLoot.cpp" />
     <ClCompile Include="src\Network\HTTP\GET.cpp" />
     <ClCompile Include="src\Network\HTTP\HTTP.cpp" />

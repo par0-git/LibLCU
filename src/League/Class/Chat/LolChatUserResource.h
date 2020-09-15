@@ -51,7 +51,7 @@ namespace LCU {
                             JSON_TO_CLASS_MEMBER(["statusMessage"], statusMessage);
                             JSON_TO_CLASS_MEMBER(["lastSeenOnlineTimestamp"], lastSeenOnlineTimestamp);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s class. (%s)", user.GetClassName(), e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s class. (%s)", user.GetClassReadableName(), e.what());
                         };
                     }
                     
@@ -76,12 +76,12 @@ namespace LCU {
                             JSON_FROM_CLASS_MEMBER(["statusMessage"], statusMessage);
                             JSON_FROM_CLASS_MEMBER(["lastSeenOnlineTimestamp"], lastSeenOnlineTimestamp);
                         JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s json object. (%s)", GetClassName(), e.what());
+                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s json object. (%s)", GetClassReadableName(), e.what());
                         };
                         return output;
                     }
 
-                    const char* GetClassName() {
+                    const char* GetClassReadableName() {
                         return "LolChatUserResource";
                     }
                 };
