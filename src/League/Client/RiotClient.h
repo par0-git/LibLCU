@@ -18,6 +18,9 @@ namespace LCU {
                 void SetAffinity(Session* session, std::string affinity);
                 std::string GetAffinity(Session* session);
 
+                std::vector<std::string> GetCommandLineArgs(Session* session);
+                void SetCommandLineArgs(Session* session, std::vector<std::string> args);
+
                 LCU::League::Class::Client::BasicSystemInfo GetSystemInfo(Session* session);
 
                 void Kill(Session* session);

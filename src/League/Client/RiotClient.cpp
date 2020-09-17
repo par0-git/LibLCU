@@ -93,6 +93,28 @@ std::string LCU::League::Client::UX::GetAffinity(Session* session)
 }
 
 /// <summary>
+/// Get the command line arguments of the application.
+/// </summary>
+/// <param name="session">Pointer to a Session object.</param>
+/// <returns>String vector of command line arguments.</returns>
+std::vector<std::string> LCU::League::Client::UX::GetCommandLineArgs(Session* session)
+{
+	nlohmann::json data = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "/riotclient/command-line-args"));
+	return data;
+}
+
+/// <summary>
+/// Set the command line arguments of the application.
+/// </summary>
+/// <param name="session">Pointer to a Session object.</param>
+/// <param name="args">String vector of command line arguments.</param>
+void LCU::League::Client::UX::SetCommandLineArgs(Session* session, std::vector<std::string> args)
+{
+	nlohmann::json data = args;
+	LCU::Network::HTTP::Post(session, "/riotclient/new-args", data.dump());
+}
+
+/// <summary>
 /// Get info for the current system.
 /// </summary>
 /// <param name="session">Pointer to a Session object.</param>
