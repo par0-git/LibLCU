@@ -2,7 +2,7 @@
 C++ library that can control (or be) the League Client.
 
 ### What does it do?
-LibLCU works like the UI process of the League Client (*LeagueClientUi*) to communicate with the back-end server process (*LeagueClient*).
+LibLCU works like the UI process of the League Client (*LeagueClientUi*) to communicate with the back-end server process (*LeagueClient*). In simpler terms, you can use LibLCU to *be* the League Client.
 
 ### Dependencies
 Depends on [*zstd*](https://github.com/facebook/zstd), [*libcurl*](https://github.com/curl/curl), [*websocketpp*](https://github.com/zaphoyd/websocketpp) and [*nlohmann-json*](https://github.com/nlohmann/json)
