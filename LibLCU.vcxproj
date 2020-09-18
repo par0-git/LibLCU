@@ -76,7 +76,7 @@
     <TargetName>liblcu_d</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\20047413\Desktop\global_unix\include;C:\vcpkg\installed\x86-windows\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\vcpkg\installed\x86-windows\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,13 +85,16 @@
     <TargetName>liblcu</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\Users\20047413\Desktop\global_unix\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>.\bin\win64</OutDir>
+    <OutDir>.\bin\win64\</OutDir>
     <TargetName>liblcu_d</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\Users\20047413\Desktop\global_unix\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\20047413\Desktop\global_unix\_x64_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -99,6 +102,7 @@
     <TargetName>liblcu</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\Users\20047413\Desktop\global_unix\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -178,6 +182,10 @@
     <ClInclude Include="src\League\Class\Loot\LolLootRedeemableStatus.h" />
     <ClInclude Include="src\Network\HTTP\HTTP.hpp" />
     <ClInclude Include="src\liblcu.hpp" />
+    <ClInclude Include="src\Output\Exceptions.hpp" />
+    <ClInclude Include="src\Output\Exceptions\CurlFailure.hpp" />
+    <ClInclude Include="src\Output\Exceptions\InvalidResponse.hpp" />
+    <ClInclude Include="src\Output\Exceptions\InvalidSession.hpp" />
     <ClInclude Include="src\Output\Logging.hpp" />
     <ClInclude Include="src\Session\Session.hpp" />
   </ItemGroup>

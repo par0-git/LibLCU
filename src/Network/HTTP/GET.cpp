@@ -37,9 +37,8 @@ std::basic_string<unsigned char>* LCU::Network::HTTP::Buffer::GetBuffer_GET_Writ
 	return GetBuffer_GET_WriteCallback(curl, false);
 }
 
-void LCU::Network::HTTP::GetBare(Session* session, std::string url, void* writeCallback, void* writeData)
+void LCU::Network::HTTP::GetBare(Session* session, CURL* curl, std::string url, void* writeCallback, void* writeData)
 {
-	CURL* curl = session->GetCURLInstance();
 	LCU::Network::HTTP::Init(curl, session, url);
 
 	if (!curl) {
@@ -60,8 +59,21 @@ void LCU::Network::HTTP::GetBare(Session* session, std::string url, void* writeC
 	// Perform GET
 	CURLcode result = curl_easy_perform(curl);
 
-	if (result != CURLE_OK)
+	// Was the request a failure?
+	if (result != CURLE_OK) {
 		LCU::Log::Out(LCU::Log::LogLevel::WARNING, LCU::Log::LogActivity::HTTP, "GET request failed. (%i)", result);
+		throw LCU::Exception::LCUCurlFailure(); // Throw cURL error
+	}
+
+	// Get the response code to the request
+	long responseCode;
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
+
+	// Was the response not OK?
+	if (responseCode != 200) {
+		LCU::Log::Out(LCU::Log::LogLevel::WARNING, LCU::Log::LogActivity::HTTP, "GET request returned invalid response code. (%i)", (int)responseCode);
+		throw LCU::Exception::LCUInvalidResponse(); // Throw invalid response error
+	}
 }
 
 std::basic_string<unsigned char> LCU::Network::HTTP::Get(Session* session, std::string url)
@@ -79,7 +91,7 @@ std::basic_string<unsigned char> LCU::Network::HTTP::Get(Session* session, std::
 	buffer->clear();
 	
 	// Start GET request
-	GetBare(session, url, &Buffer::GET_WriteCallback, buffer);
+	GetBare(session, curl, url, &Buffer::GET_WriteCallback, buffer);
 
 	// Return buffer
 	return *buffer;

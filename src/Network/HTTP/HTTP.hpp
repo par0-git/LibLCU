@@ -4,11 +4,12 @@
 #include <string>
 #include "../../Session/Session.hpp"
 #include "../../Output/Logging.hpp"
+#include "../../Output/Exceptions.hpp"
 
 namespace LCU {
 	namespace Network {
 		namespace HTTP {
-			void GetBare(Session* session, std::string url, void* writeCallback, void* writeData);
+			void GetBare(Session* session, CURL* curl, std::string url, void* writeCallback, void* writeData);
 			
 			void Post(Session* session, std::string url, std::string data);
 			void Put(Session* session, std::string url, std::string data);

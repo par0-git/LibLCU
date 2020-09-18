@@ -10,8 +10,8 @@
 namespace LCU {
 	struct Lockfile {
 		std::string name;
-		int servicePort;
-		int serverPort;
+		int servicePort = -1;
+		int serverPort = -1;
 		std::string auth;
 		std::string protocol;
 		bool valid = false;
@@ -26,7 +26,6 @@ namespace LCU {
         }
 
         ~Session() {
-            active = false;
             Disconnect();
         }
         
