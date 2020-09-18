@@ -7,11 +7,11 @@
 /// <returns>LolChatUserResource</returns>
 LCU::League::Class::Chat::LolChatUserResource LCU::League::Chat::GetMe(Session* session)
 {
-	nlohmann::json jsonObject = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "lol-chat/v1/me"));
+	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "lol-chat/v1/me");
 
-	Class::Chat::LolChatUserResource out;
-	Class::Chat::LolChatUserResource::FromJSON(out, jsonObject);
-	return out;
+	Class::Chat::LolChatUserResource user;
+	Class::Chat::LolChatUserResource::FromJSON(out, nlohmann::json::parse(response));
+	return user;
 }
 
 /// <summary>
