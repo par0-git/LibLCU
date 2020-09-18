@@ -88,8 +88,8 @@ void LCU::League::Client::UX::SetAffinity(Session* session, std::string affinity
 /// <param name="session">Pointer to a Session object.</param>
 std::string LCU::League::Client::UX::GetAffinity(Session* session)
 {
-	nlohmann::json data = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "/riotclient/affinity"));
-	return data["currentAffinity"];
+	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "/riotclient/affinity");
+	return nlohmann::json::parse(response)["currentAffinity"];
 }
 
 /// <summary>
@@ -99,8 +99,8 @@ std::string LCU::League::Client::UX::GetAffinity(Session* session)
 /// <returns>String vector of command line arguments.</returns>
 std::vector<std::string> LCU::League::Client::UX::GetCommandLineArgs(Session* session)
 {
-	nlohmann::json data = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "/riotclient/command-line-args"));
-	return data;
+	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "/riotclient/command-line-args");
+	return nlohmann::json::parse(response).get<std::vector<std::string>>();
 }
 
 /// <summary>
@@ -110,6 +110,7 @@ std::vector<std::string> LCU::League::Client::UX::GetCommandLineArgs(Session* se
 /// <param name="args">String vector of command line arguments.</param>
 void LCU::League::Client::UX::SetCommandLineArgs(Session* session, std::vector<std::string> args)
 {
+	// This function is broken. Refer to issue #2.
 	nlohmann::json data = args;
 	LCU::Network::HTTP::Post(session, "/riotclient/new-args", data.dump());
 }
