@@ -167,6 +167,8 @@
   <ItemGroup>
     <ClInclude Include="src\League\Chat\LolChat.h" />
     <ClInclude Include="src\League\Chat\LolFriends.h" />
+    <ClInclude Include="src\Objects\SerializedContainer.h" />
+    <ClInclude Include="src\Objects\SerializedValue.h" />
     <ClInclude Include="src\League\Class\Store\LolStoreCatalogItem.h" />
     <ClInclude Include="src\League\Class\Client\BasicSystemInfo.h" />
     <ClInclude Include="src\League\Class\Store\LolStoreSale.h" />
@@ -184,8 +186,9 @@
     <ClInclude Include="src\Output\Exceptions.hpp" />
     <ClInclude Include="src\Output\Exceptions\CurlFailure.hpp" />
     <ClInclude Include="src\Output\Exceptions\InvalidResponse.hpp" />
+    <ClInclude Include="src\Output\Exceptions\SerializedValueFailure.hpp" />
     <ClInclude Include="src\Output\Logging.hpp" />
-    <ClInclude Include="src\Session\Session.hpp" />
+    <ClInclude Include="src\Network\Session.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\League\Chat\LolChat.cpp" />
@@ -198,7 +201,7 @@
     <ClCompile Include="src\Network\HTTP\POST.cpp" />
     <ClCompile Include="src\Network\HTTP\PUT.cpp" />
     <ClCompile Include="src\Output\Logging.cpp" />
-    <ClCompile Include="src\Session\Session.cpp" />
+    <ClCompile Include="src\Network\Session.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
