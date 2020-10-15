@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <thread>
-#include "../../Session/Session.hpp"
+#include "../../Network/Session.hpp"
 #include "../Class/Loot/LolLootPlayerLoot.h"
 
 namespace LCU {

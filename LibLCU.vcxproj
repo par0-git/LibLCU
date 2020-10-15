@@ -165,8 +165,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\FileIO\WadParse.h" />
     <ClInclude Include="src\League\Chat\LolChat.h" />
     <ClInclude Include="src\League\Chat\LolFriends.h" />
+    <ClInclude Include="src\Objects\Exceptions\SerializedObjectException.h" />
     <ClInclude Include="src\Objects\SerializedContainer.h" />
     <ClInclude Include="src\Objects\SerializedValue.h" />
     <ClInclude Include="src\League\Class\Store\LolStoreCatalogItem.h" />
@@ -186,11 +188,11 @@
     <ClInclude Include="src\Output\Exceptions.hpp" />
     <ClInclude Include="src\Output\Exceptions\CurlFailure.hpp" />
     <ClInclude Include="src\Output\Exceptions\InvalidResponse.hpp" />
-    <ClInclude Include="src\Output\Exceptions\SerializedValueFailure.hpp" />
     <ClInclude Include="src\Output\Logging.hpp" />
     <ClInclude Include="src\Network\Session.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FileIO\WadParse.cpp" />
     <ClCompile Include="src\League\Chat\LolChat.cpp" />
     <ClCompile Include="src\League\Chat\LolFriends.cpp" />
     <ClCompile Include="src\League\Client\RiotClient.cpp" />

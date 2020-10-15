@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Session/Session.hpp"
+#include "../../Network/Session.hpp"
 #include "../../Network/HTTP/HTTP.hpp"
 #include "../Class/Client/BasicSystemInfo.h"
 #include <nlohmann\json.hpp>

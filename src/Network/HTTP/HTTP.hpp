@@ -2,7 +2,7 @@
 #include <curl/curl.h>
 #include <vector>
 #include <string>
-#include "../../Session/Session.hpp"
+#include "../../Network/Session.hpp"
 #include "../../Output/Logging.hpp"
 #include "../../Output/Exceptions.hpp"
 

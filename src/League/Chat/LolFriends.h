@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Session/Session.hpp"
+#include "../../Network/Session.hpp"
 #include "../Class/Chat/LolChatFriendResource.h"
 
 namespace LCU {
