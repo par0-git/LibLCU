@@ -140,13 +140,49 @@ namespace LCU {
         }
 
         std::string getInfo() {
-            return "([" + Type() + "], " + name + "): " + getReadable();
+            return "([" + Type() + "], " + name + "): \"" + getReadable() + '\"';
         }
         std::string getName() { return name; }
         void setName(std::string _name) { name = _name; }
 
         SerializedValueType& getType() { return type; }
         std::string getTypeReadable() { return Type(); }
+
+        // Converting
+        /*rapidjson::Value getDocument() {
+            if (type != SerializedValueType::OBJECT)
+                throw LCU::Exception::SerializedObjectFailure("Can't get a document from a(n) " + Type());
+
+            rapidjson::Document document;
+            document.SetObject();
+
+            // Start work on all objects
+            for (int i = 0; i < vObjects.size(); i++) {
+                rapidjson::Value value;
+
+                switch (vObjects[i].type) {
+                case SerializedValueType::STRING:
+                    value.SetString(rapidjson::StringRef(vObjects[i].vString.c_str()));
+                    break;
+                case SerializedValueType::NUMBER:
+                    value.SetInt(vObjects[i].vInt32);
+                    break;
+                case SerializedValueType::BOOL:
+                    value.SetBool(vObjects[i].vBool);
+                    break;
+                case SerializedValueType::OBJECT:
+                    value = rapidjson::Value(vObjects[i].getDocument());
+                }
+
+                document.AddMember(
+                    rapidjson::StringRef(vObjects[i].name.c_str()),
+                    value,
+                    document.GetAllocator()
+                );
+            }
+
+            return rapidjson::Value(document);
+        }*/
     private:
         std::string name;
         union {

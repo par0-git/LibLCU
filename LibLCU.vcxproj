@@ -92,6 +92,7 @@
     <TargetName>liblcu_d</TargetName>
     <IntDir>.\build\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\Users\20047413\Desktop\curl-7.73.0\include;C:\Users\20047413\Desktop\root\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -169,7 +170,6 @@
     <ClInclude Include="src\League\Chat\LolChat.h" />
     <ClInclude Include="src\League\Chat\LolFriends.h" />
     <ClInclude Include="src\Objects\Exceptions\SerializedObjectException.h" />
-    <ClInclude Include="src\Objects\SerializedContainer.h" />
     <ClInclude Include="src\Objects\SerializedValue.h" />
     <ClInclude Include="src\League\Class\Store\LolStoreCatalogItem.h" />
     <ClInclude Include="src\League\Class\Client\BasicSystemInfo.h" />
