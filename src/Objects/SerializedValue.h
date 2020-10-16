@@ -14,129 +14,152 @@
 namespace LCU {
     enum SerializedValueType {
         INVALID,
+        OBJECT,
         STRING,
-        INT32,
-        INT64,
-        UINT32,
-        UINT64,
+        NUMBER,
         BOOL,
         VECTOR,
+        _MAX_
     };
 
     // This class is a wrapper for a JSON object.
     class SerializedValue {
     public:
-        SerializedValue(const rapidjson::Value& value) {
-            // RapidJSON method of parsing
+        SerializedValue(const rapidjson::Value& value, std::string _name = "undefined") {
             switch (value.GetType()) {
             case rapidjson::Type::kNullType:
                 type = SerializedValueType::INVALID;
                 break;
             case rapidjson::Type::kFalseType:
+                type = SerializedValueType::BOOL;
+                vBool = false;
+                break;
             case rapidjson::Type::kTrueType:
                 type = SerializedValueType::BOOL;
                 vBool = true;
                 break;
             case rapidjson::Type::kObjectType:
-                type = SerializedValueType::INVALID;
+                type = SerializedValueType::OBJECT;
+                for (rapidjson::Value::ConstMemberIterator i = value.MemberBegin(); i != value.MemberEnd(); ++i) {
+                    const rapidjson::Value& objectNameValue = i->name;
+                    const char* objectName = objectNameValue.GetString();
+
+                    const rapidjson::Value& objectValue = i->value;
+
+                    vObjects.push_back(SerializedValue(objectValue, objectName));
+                }
                 break;
             case rapidjson::Type::kArrayType:
                 type = SerializedValueType::VECTOR;
-
+                for (const rapidjson::Value& member : value.GetArray()) {
+                    vArray.push_back(SerializedValue(member));
+                }
                 break;
             case rapidjson::Type::kStringType:
                 type = SerializedValueType::STRING;
                 vString = value.GetString();
                 break;
             case rapidjson::Type::kNumberType:
-                if (value.IsUint64()) {
-                    type = SerializedValueType::UINT64;
-                    vUInt64 = value.GetUint64();
-                }
-                else if (value.IsUint()) {
-                    type = SerializedValueType::UINT32;
-                    vUInt32 = value.GetUint();
-                }
-                else if (value.IsInt64()) {
-                    type = SerializedValueType::INT64;
-                    vInt64 = value.GetInt64();
-                }
-                else {
-                    type = SerializedValueType::INT32;
-                    vInt32 = value.GetInt();
-                    vInt32 = 0;
-                }
+                vInt32 = value.GetInt();
+                type = SerializedValueType::NUMBER;
                 break;
             default:
+                throw LCU::Exception::SerializedParsingFailure("Object provided had an invalid type.");
                 type = SerializedValueType::INVALID;
             }
+
+            name = _name;
         }
 
-        std::string& String() {
-            if (type != SerializedValueType::STRING)
-                throw LCU::Exception::SerializedValueFailure("Tried to get a String from a(n) " + Type());
-
-            return vString;
-        }
-
-        int& Int() {
-            if (type != SerializedValueType::INT32)
-                throw LCU::Exception::SerializedValueFailure("Tried to get an Int32 from a(n) " + Type());
-
-            return vInt32;
-        }
-
-        int64_t& Int64() {
-            if (type != SerializedValueType::INT64)
-                throw LCU::Exception::SerializedValueFailure("Tried to get an Int64 from a(n) " + Type());
-
-            return vInt64;
-        }
-
-        uint32_t& UInt() {
-            if (type != SerializedValueType::UINT32)
-                throw LCU::Exception::SerializedValueFailure("Tried to get a UInt32 from a(n) " + Type());
-
-            return vUInt32;
-        }
-
-        uint64_t& UInt64() {
-            if (type != SerializedValueType::UINT64)
-                throw LCU::Exception::SerializedValueFailure("Tried to get a UInt64 from a(n) " + Type());
-
-            return vUInt64;
-        }
-
-        bool& Bool() {
-            if (type != SerializedValueType::BOOL)
-                throw LCU::Exception::SerializedValueFailure("Tried to get a Bool from a(n) " + Type());
-
-            return vBool;
-        }
-
+        // Value Operators
         std::vector<SerializedValue>& Vector() {
             if (type != SerializedValueType::VECTOR)
                 throw LCU::Exception::SerializedValueFailure("Tried to get a Vector from a(n) " + Type());
 
             return vArray;
         }
-        
+
+        std::string String() {
+            if (type != SerializedValueType::STRING)
+                throw LCU::Exception::SerializedValueFailure("Tried to get a String from a(n) " + Type());
+
+            return vString;
+        }
+
+        int Int() {
+            if (type != SerializedValueType::NUMBER)
+                throw LCU::Exception::SerializedValueFailure("Tried to get a Number from a(n) " + Type());
+
+            return vInt32;
+        }
+
+        bool Bool() {
+            if (type != SerializedValueType::BOOL)
+                throw LCU::Exception::SerializedValueFailure("Tried to get a Bool from a(n) " + Type());
+
+            return vBool;
+        }
+
+        // Object Manipulation
+        SerializedValue& Child(std::string object) {
+            if (type != SerializedValueType::OBJECT)
+                throw LCU::Exception::SerializedObjectFailure("Can't get an object from a " + Type());
+
+            for (int i = 0; i < vObjects.size(); i++) {
+                if (vObjects[i].getName() == object)
+                    return vObjects[i];
+            }
+
+            throw LCU::Exception::SerializedObjectFailure("Object was not found.");
+        }
+
+        // Value Data
+        std::string getReadable() {
+            switch (type) {
+            case SerializedValueType::INVALID:
+                return "undefined";
+                break;
+            case SerializedValueType::OBJECT:
+                return "object with " + std::to_string(vObjects.size()) + " children";
+                break;
+            case SerializedValueType::STRING:
+                return vString;
+                break;
+            case SerializedValueType::NUMBER:
+                return std::to_string(vInt32);
+                break;
+            case SerializedValueType::BOOL:
+                return vBool ? "true" : "false";
+                break;
+            case SerializedValueType::VECTOR:
+                return "array with " + std::to_string(vArray.size()) + " members";
+                break;
+            default:
+                return "invalid";
+            }
+        }
+
+        std::string getInfo() {
+            return "([" + Type() + "], " + name + "): " + getReadable();
+        }
+        std::string getName() { return name; }
+        void setName(std::string _name) { name = _name; }
+
         SerializedValueType& getType() { return type; }
         std::string getTypeReadable() { return Type(); }
     private:
-        SerializedValueType type;
+        std::string name;
         union {
             int vInt32;
-            int64_t vInt64;
-            uint32_t vUInt32;
-            uint64_t vUInt64;
             bool vBool;
         };
+        SerializedValueType type;
         std::vector<SerializedValue> vArray; // std::vector can't be in a union
+        std::vector<SerializedValue> vObjects; // std::vector can't be in a union
         std::string vString; // std::string can't be in a union
 
         std::string Type() {
-            std::string typeNames[sizeof(SerializedValueType) + 1] = { "string", "int32", "uint64", "bool", "vector" };
+            std::string typeNames[SerializedValueType::_MAX_] = { "undefined", "object", "string", "number", "bool", "vector" };
             return typeNames[(int)type];
         }
     };

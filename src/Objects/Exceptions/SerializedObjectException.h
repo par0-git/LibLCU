@@ -39,5 +39,14 @@ namespace LCU {
 				return "LibLCU failed while creating a container.";
 			}
 		};
+
+		struct SerializedObjectFailure : public SerializedObjectException
+		{
+			using SerializedObjectException::SerializedObjectException;
+			const char* what() const throw ()
+			{
+				return "LibLCU failed while manipulating an object.";
+			}
+		};
 	}
 }
