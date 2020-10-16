@@ -48,5 +48,14 @@ namespace LCU {
 				return "LibLCU failed while manipulating an object.";
 			}
 		};
+
+		struct SerializedParsingFailure : public SerializedObjectException
+		{
+			using SerializedObjectException::SerializedObjectException;
+			const char* what() const throw ()
+			{
+				return "LibLCU failed while parsing JSON.";
+			}
+		};
 	}
 }
