@@ -20,6 +20,18 @@ namespace LCU {
                     BasicOperatingSystem operatingSystem;
                     int physicalMemory, physicalProcessorCores, processorSpeed;
 
+                    std::vector<SerializedObjectValue> GetSerializationData() {
+                        return {
+                            {SerializedObjectValueType::STRING, "operatingSystem::edition", &operatingSystem.edition},
+                            {SerializedObjectValueType::STRING, "operatingSystem::platform", &operatingSystem.platform},
+                            {SerializedObjectValueType::STRING, "operatingSystem::versionMajor", &operatingSystem.versionMajor},
+                            {SerializedObjectValueType::STRING, "operatingSystem::versionMinor", &operatingSystem.versionMinor},
+                            {SerializedObjectValueType::NUMBER, "physicalMemory", &physicalMemory},
+                            {SerializedObjectValueType::NUMBER, "physicalProcessorCores", &physicalProcessorCores},
+                            {SerializedObjectValueType::NUMBER, "processorSpeed", &processorSpeed},
+                        };
+                    }
+
                     static void FromJSON(BasicSystemInfo& info, nlohmann::json input) {
                         try JSON_CLASS_BEGIN(input, info);
                             JSON_TO_CLASS_MEMBER(["operatingSystem"]["edition"], operatingSystem.edition);

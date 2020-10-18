@@ -13,6 +13,8 @@ namespace LCU {
             namespace Chat {
                 class LolChatUserResource : public LolBaseClass {
                 public:
+                    using LolBaseClass::LolBaseClass;
+
                     uint64_t summonerId;
                     std::string id;
                     std::string name;
@@ -30,6 +32,28 @@ namespace LCU {
                     uint64_t time;
                     std::string statusMessage;
                     std::string lastSeenOnlineTimestamp;
+
+                    std::vector<SerializedObjectValue> GetSerializationData() {
+                        return {
+                            {SerializedObjectValueType::NUMBER, "summonerId", &summonerId},
+                            {SerializedObjectValueType::STRING, "id", &id},
+                            {SerializedObjectValueType::STRING, "name", &name},
+                            {SerializedObjectValueType::STRING, "pid", &pid},
+                            {SerializedObjectValueType::STRING, "puuid", &puuid},
+                            {SerializedObjectValueType::STRING, "gameName", &gameName},
+                            {SerializedObjectValueType::STRING, "gameTag", &gameTag},
+                            {SerializedObjectValueType::NUMBER, "icon", &icon},
+                            {SerializedObjectValueType::STRING, "availability", &availability},
+                            {SerializedObjectValueType::STRING, "platformId", &platformId},
+                            {SerializedObjectValueType::STRING, "patchline", &patchline},
+                            {SerializedObjectValueType::STRING, "product", &product},
+                            {SerializedObjectValueType::STRING, "productName", &productName},
+                            {SerializedObjectValueType::STRING, "summary", &summary},
+                            {SerializedObjectValueType::NUMBER, "time", &time},
+                            {SerializedObjectValueType::STRING, "statusMessage", &statusMessage},
+                            {SerializedObjectValueType::STRING, "lastSeenOnlineTimestamp", &lastSeenOnlineTimestamp},
+                        };
+                    }
 
                     static void FromJSON(LolChatUserResource& user, nlohmann::json input) {
                         try JSON_CLASS_BEGIN(input, user);

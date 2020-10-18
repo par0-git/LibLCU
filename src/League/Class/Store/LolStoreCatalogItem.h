@@ -22,6 +22,12 @@ namespace LCU {
                     // std::vector<LolStoreItemCost> prices
                     std::string releaseDate;
 
+                    std::vector<SerializedObjectValue> GetSerializationData() {
+                        return {
+                           
+                        };
+                    }
+
                     static void FromJSON(LolStoreCatalogItem& item, nlohmann::json input) {
                     }
 

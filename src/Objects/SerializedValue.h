@@ -12,7 +12,7 @@
 #include <rapidjson/document.h> // Method of parsing
 
 namespace LCU {
-    enum SerializedValueType {
+    enum class SerializedValueType {
         INVALID,
         OBJECT,
         STRING,
@@ -25,6 +25,10 @@ namespace LCU {
     // This class is a wrapper for a JSON object.
     class SerializedValue {
     public:
+        SerializedValue() {
+            type = SerializedValueType::INVALID;
+        };
+
         SerializedValue(const rapidjson::Value& value, std::string _name = "undefined") {
             switch (value.GetType()) {
             case rapidjson::Type::kNullType:
@@ -183,6 +187,8 @@ namespace LCU {
 
             return rapidjson::Value(document);
         }*/
+
+        ~SerializedValue() {}
     private:
         std::string name;
         union {
@@ -195,7 +201,7 @@ namespace LCU {
         std::string vString; // std::string can't be in a union
 
         std::string Type() {
-            std::string typeNames[SerializedValueType::_MAX_] = { "undefined", "object", "string", "number", "bool", "vector" };
+            std::string typeNames[(int)SerializedValueType::_MAX_] = { "undefined", "object", "string", "number", "bool", "vector" };
             return typeNames[(int)type];
         }
     };

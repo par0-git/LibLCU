@@ -13,11 +13,23 @@ namespace LCU {
             namespace Chat {
                 class LolChatFriendResource : public LolChatUserResource {
                 public:
+                    using LolChatUserResource::LolChatUserResource;
+
                     bool isP2PConversationMuted;
                     unsigned int groupId;
                     unsigned int displayGroupId;
                     std::string groupName;
                     std::string displayGroupName;
+
+                    std::vector<SerializedObjectValue> GetSerializationData() {
+                        return {
+                            {SerializedObjectValueType::BOOL, "isP2PConversationMuted", &isP2PConversationMuted},
+                            {SerializedObjectValueType::NUMBER, "groupId", &groupId},
+                            {SerializedObjectValueType::NUMBER, "displayGroupId", &displayGroupId},
+                            {SerializedObjectValueType::STRING, "groupName", &groupName},
+                            {SerializedObjectValueType::STRING, "displayGroupName", &displayGroupName},
+                        };
+                    }
 
                     static void FromJSON(LolChatFriendResource& user, nlohmann::json input) {
                         // Parent class FromJSON

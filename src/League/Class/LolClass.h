@@ -7,6 +7,7 @@
 */
 
 #pragma once
+#include "../../Objects/SerializationBasedObjectCreator.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
@@ -32,6 +33,53 @@ namespace LCU {
             class LolBaseClass {
             public:
                 virtual const char* GetClassReadableName() = 0;
+                virtual std::vector<SerializedObjectValue> GetSerializationData() = 0;
+
+                LolBaseClass() {};
+
+                LolBaseClass(SerializedValue& baseValue) {
+                    std::vector<SerializedObjectValue> sData = GetSerializationData();
+                    for (SerializedObjectValue sObjectValue : sData) {
+                        try {
+
+                            SerializedValue& childValue = baseValue.Child(sObjectValue.src);
+                            switch (sObjectValue.type) {
+                            case LCU::SerializedObjectValueType::INVALID:
+                                sObjectValue.ptr = NULL;
+                                break;
+                            case LCU::SerializedObjectValueType::OBJECT:
+                                *(SerializedValue*)sObjectValue.ptr = childValue; // This most likely won't work!
+                                break;
+                            case LCU::SerializedObjectValueType::STRING:
+                                *(std::string*)sObjectValue.ptr = childValue.String();
+                                break;
+                            case LCU::SerializedObjectValueType::NUMBER:
+                                *(int*)sObjectValue.ptr = childValue.Int();
+                                break;
+                            case LCU::SerializedObjectValueType::BOOL:
+                                *(bool*)sObjectValue.ptr = childValue.Bool();
+                                break;
+                            case LCU::SerializedObjectValueType::VECTOR:
+                                *(std::vector<SerializedValue>*)sObjectValue.ptr = childValue.Vector();
+                                break;
+                            default:
+                                sObjectValue.ptr = NULL;
+                            };
+                        }
+                        catch (LCU::Exception::SerializedObjectFailure& e) {
+                            // No object found from src
+                            LCU::Log::Out(
+                                LCU::Log::LogLevel::ERR,
+                                LCU::Log::LogActivity::CLASS_CREATION,
+                                "Could not create the object for %s. The child %s did not exist.",
+                                GetClassReadableName(),
+                                sObjectValue.src
+                            );
+
+                            throw LCU::Exception::SerializedObjectFailure(e.reason());
+                        }
+                    }
+                }
             };
         }
     }

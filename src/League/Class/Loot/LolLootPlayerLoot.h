@@ -52,6 +52,12 @@ namespace LCU {
                     bool isNew,
                         isRental;
 
+                    std::vector<SerializedObjectValue> GetSerializationData() {
+                        return {
+                           
+                        };
+                    }
+
                     static void FromJSON(LolLootPlayerLoot& item, nlohmann::json input) {
                         try JSON_CLASS_BEGIN(input, item);
                             JSON_TO_CLASS_MEMBER(["lootName"], lootName);
