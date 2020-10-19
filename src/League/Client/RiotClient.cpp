@@ -122,10 +122,10 @@ void LCU::League::Client::UX::SetCommandLineArgs(Session* session, std::vector<s
 /// <returns>Basic system info.</returns>
 LCU::League::Class::Client::BasicSystemInfo LCU::League::Client::UX::GetSystemInfo(Session* session)
 {
-	nlohmann::json data = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "/riotclient/system-info/v1/basic-info"));
+	//nlohmann::json data = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "/riotclient/system-info/v1/basic-info"));
 	LCU::League::Class::Client::BasicSystemInfo sysInfo;
 
-	LCU::League::Class::Client::BasicSystemInfo::FromJSON(sysInfo, data);
+	//LCU::League::Class::Client::BasicSystemInfo::FromJSON(sysInfo, data);
 	return sysInfo;
 }
 

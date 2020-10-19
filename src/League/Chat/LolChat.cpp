@@ -9,8 +9,8 @@ LCU::League::Class::Chat::LolChatUserResource LCU::League::Chat::GetMe(Session* 
 {
 	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "lol-chat/v1/me");
 
-	Class::Chat::LolChatUserResource user;
-	Class::Chat::LolChatUserResource::FromJSON(user, nlohmann::json::parse(response));
+	Class::Chat::LolChatUserResource user;	
+	//Class::Chat::LolChatUserResource::FromJSON(user, nlohmann::json::parse(response));
 	return user;
 }
 
@@ -21,5 +21,5 @@ LCU::League::Class::Chat::LolChatUserResource LCU::League::Chat::GetMe(Session* 
 /// <param name="user">LolChatUserResource to use.</param>
 void LCU::League::Chat::SetMe(Session* session, LCU::League::Class::Chat::LolChatUserResource user)
 {
-	LCU::Network::HTTP::Put(session, "lol-chat/v1/me", user.ToJSON().dump());
+	//LCU::Network::HTTP::Put(session, "lol-chat/v1/me", user.ToJSON().dump());
 }

@@ -13,55 +13,25 @@ namespace LCU {
             namespace Chat {
                 class LolChatFriendResource : public LolChatUserResource {
                 public:
-                    using LolChatUserResource::LolChatUserResource;
-
                     bool isP2PConversationMuted;
                     unsigned int groupId;
                     unsigned int displayGroupId;
                     std::string groupName;
                     std::string displayGroupName;
+                    std::vector<SerializedValue> testVector;
 
-                    std::vector<SerializedObjectValue> GetSerializationData() {
+                    std::vector<SerializedObjectValue> getSerializationData() {
                         return {
-                            {SerializedObjectValueType::BOOL, "isP2PConversationMuted", &isP2PConversationMuted},
-                            {SerializedObjectValueType::NUMBER, "groupId", &groupId},
-                            {SerializedObjectValueType::NUMBER, "displayGroupId", &displayGroupId},
-                            {SerializedObjectValueType::STRING, "groupName", &groupName},
-                            {SerializedObjectValueType::STRING, "displayGroupName", &displayGroupName},
+                            {SerializedValueType::BOOL, "isP2PConversationMuted", &isP2PConversationMuted},
+                            {SerializedValueType::NUMBER, "groupId", &groupId},
+                            {SerializedValueType::NUMBER, "displayGroupId", &displayGroupId},
+                            {SerializedValueType::STRING, "groupName", &groupName},
+                            {SerializedValueType::STRING, "displayGroupName", &displayGroupName},
+                            {SerializedValueType::VECTOR, "testVector", &testVector},
                         };
                     }
 
-                    static void FromJSON(LolChatFriendResource& user, nlohmann::json input) {
-                        // Parent class FromJSON
-                        LolChatUserResource::FromJSON(user, input);
-
-                        try JSON_CLASS_BEGIN(input, user);
-                            JSON_TO_CLASS_MEMBER(["isP2PConversationMuted"], isP2PConversationMuted);
-                            JSON_TO_CLASS_MEMBER(["groupId"], groupId);
-                            JSON_TO_CLASS_MEMBER(["displayGroupId"], displayGroupId);
-                            JSON_TO_CLASS_MEMBER(["groupName"], groupName);
-                            JSON_TO_CLASS_MEMBER(["displayGroupName"], displayGroupName);
-                        JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s class. (%s)", user.GetClassReadableName(), e.what());
-                        };
-                    }
-
-                    nlohmann::json ToJSON() {
-                        nlohmann::json output = LolChatUserResource::ToJSON();
-
-                        try JSON_CLASS_BEGIN(output, *this);
-                            JSON_FROM_CLASS_MEMBER(["isP2PConversationMuted"], isP2PConversationMuted);
-                            JSON_FROM_CLASS_MEMBER(["groupId"], groupId);
-                            JSON_FROM_CLASS_MEMBER(["displayGroupId"], displayGroupId);
-                            JSON_FROM_CLASS_MEMBER(["groupName"], groupName);
-                            JSON_FROM_CLASS_MEMBER(["displayGroupName"], displayGroupName);
-                        JSON_CLASS_END() catch (std::exception& e) {
-                            LCU::Log::Out(LCU::Log::LogLevel::ERR, LCU::Log::LogActivity::CLASS_CREATION, "Failed to create a %s json object. (%s)", GetClassReadableName(), e.what());
-                        };
-                        return output;
-                    }
-
-                    const char* GetClassReadableName() {
+                    const char* getClassReadableName() {
                         return "LolChatFriendResource";
                     }
                 };

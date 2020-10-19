@@ -10,11 +10,11 @@ std::vector<LCU::League::Class::Chat::LolChatFriendResource> LCU::League::Chat::
 	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "lol-chat/v1/friends");
 	std::vector<LCU::League::Class::Chat::LolChatFriendResource> friends;
 
-	for (auto& item : nlohmann::json::parse(response).items()) {
+	/*for (auto& item : nlohmann::json::parse(response).items()) {
 		Class::Chat::LolChatFriendResource user;
 		Class::Chat::LolChatFriendResource::FromJSON(user, item.value());
 		friends.push_back(user);
-	}
+	}*/
 
 	return friends;
 }

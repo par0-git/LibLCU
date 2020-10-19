@@ -8,23 +8,10 @@
 
 #pragma once
 #include "../../Objects/SerializationBasedObjectCreator.h"
-#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 #include "../../Output/Logging.hpp"
 #include "../../Network/HTTP/HTTP.hpp"
-
-// Begin a scope for managing a JSON Object<->C++ Class transfer.
-#define JSON_CLASS_BEGIN(input, output) { nlohmann::json& _json_input_ = input; decltype(output)& _class_output_ = output;
-
-#define JSON_CLASS_BEGIN_SAFE(input, output) try { nlohmann::json& _json_input_ = input; decltype(output)& _class_output_ = output;
-
-// Copy a variable to / from a JSON object.
-#define JSON_TO_CLASS_MEMBER(json_member, class_member) _class_output_.class_member = _json_input_ json_member.get<decltype(_class_output_.class_member)>();
-#define JSON_FROM_CLASS_MEMBER(json_member, class_member) _json_input_ json_member = _class_output_.class_member;
-
-// End a scope for managing a JSON Object<->C++ Class transfer.
-#define JSON_CLASS_END() }
 
 namespace LCU {
     namespace League {
@@ -32,34 +19,35 @@ namespace LCU {
             // Object base class
             class LolBaseClass {
             public:
-                virtual const char* GetClassReadableName() = 0;
-                virtual std::vector<SerializedObjectValue> GetSerializationData() = 0;
+                virtual const char* getClassReadableName() = 0;
+                virtual std::vector<SerializedObjectValue> getSerializationData() = 0;
 
                 LolBaseClass() {};
 
-                LolBaseClass(SerializedValue& baseValue) {
-                    std::vector<SerializedObjectValue> sData = GetSerializationData();
+                void init(SerializedValue& baseValue) {
+                    std::vector<SerializedObjectValue> sData = getSerializationData();
+
                     for (SerializedObjectValue sObjectValue : sData) {
                         try {
-
                             SerializedValue& childValue = baseValue.Child(sObjectValue.src);
+                            std::string cc;
                             switch (sObjectValue.type) {
-                            case LCU::SerializedObjectValueType::INVALID:
+                            case LCU::SerializedValueType::INVALID:
                                 sObjectValue.ptr = NULL;
                                 break;
-                            case LCU::SerializedObjectValueType::OBJECT:
+                            case LCU::SerializedValueType::OBJECT:
                                 *(SerializedValue*)sObjectValue.ptr = childValue; // This most likely won't work!
                                 break;
-                            case LCU::SerializedObjectValueType::STRING:
+                            case LCU::SerializedValueType::STRING:
                                 *(std::string*)sObjectValue.ptr = childValue.String();
                                 break;
-                            case LCU::SerializedObjectValueType::NUMBER:
+                            case LCU::SerializedValueType::NUMBER:
                                 *(int*)sObjectValue.ptr = childValue.Int();
                                 break;
-                            case LCU::SerializedObjectValueType::BOOL:
+                            case LCU::SerializedValueType::BOOL:
                                 *(bool*)sObjectValue.ptr = childValue.Bool();
                                 break;
-                            case LCU::SerializedObjectValueType::VECTOR:
+                            case LCU::SerializedValueType::VECTOR:
                                 *(std::vector<SerializedValue>*)sObjectValue.ptr = childValue.Vector();
                                 break;
                             default:
@@ -72,13 +60,45 @@ namespace LCU {
                                 LCU::Log::LogLevel::ERR,
                                 LCU::Log::LogActivity::CLASS_CREATION,
                                 "Could not create the object for %s. The child %s did not exist.",
-                                GetClassReadableName(),
+                                getClassReadableName(),
                                 sObjectValue.src
                             );
 
                             throw LCU::Exception::SerializedObjectFailure(e.reason());
                         }
                     }
+                }
+
+                std::string pretty() {
+                    std::vector<SerializedObjectValue> sData = getSerializationData();
+                    std::string typeNames[(int)SerializedValueType::_MAX_] = { "undefined", "object", "string", "number", "bool", "vector" };
+                    std::string output;
+
+                    // Char arrays
+                    char classInfoString[256];
+                    char classMemberString[128];
+
+                    // Get pretty class name and address
+                    int classInfoSize = snprintf(classInfoString, 256, "{%s} (0x%p)\n", 
+                        getClassReadableName(), 
+                        this);
+
+                    // Add class name and address to output string
+                    output += classInfoString;
+
+                    for (SerializedObjectValue sObjectValue : sData) {
+                        // Get pretty member information
+                        int classMemberSize = snprintf(classMemberString, 128, "\t[%s](%s)(0x%p)\n", 
+                            sObjectValue.src, 
+                            typeNames[(int)sObjectValue.type].c_str(), 
+                            sObjectValue.ptr);
+
+                        // Add member information to string
+                        output += classMemberString;
+                    }
+
+                    // Return string
+                    return output;
                 }
             };
         }

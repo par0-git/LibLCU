@@ -9,18 +9,8 @@
 #include "SerializedValue.h"
 
 namespace LCU {
-    enum SerializedObjectValueType {
-        INVALID,
-        OBJECT,
-        STRING,
-        NUMBER,
-        BOOL,
-        VECTOR,
-        _MAX_
-    };
-
     struct SerializedObjectValue {
-        SerializedObjectValueType type;
+        SerializedValueType type;
         const char* src;
         void* ptr;
     };
