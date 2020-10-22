@@ -18,7 +18,6 @@ namespace LCU {
                     unsigned int displayGroupId;
                     std::string groupName;
                     std::string displayGroupName;
-                    std::vector<SerializedValue> testVector;
 
                     std::vector<SerializedObjectValue> getSerializationData() {
                         return {
@@ -27,7 +26,6 @@ namespace LCU {
                             {SerializedValueType::NUMBER, "displayGroupId", &displayGroupId},
                             {SerializedValueType::STRING, "groupName", &groupName},
                             {SerializedValueType::STRING, "displayGroupName", &displayGroupName},
-                            {SerializedValueType::VECTOR, "testVector", &testVector},
                         };
                     }
 

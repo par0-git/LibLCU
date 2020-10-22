@@ -76,21 +76,25 @@ void LCU::League::Client::UX::Minimize(Session* session)
 void LCU::League::Client::UX::SetAffinity(Session* session, std::string affinity)
 {
 	// Takes "newAffinity" as a string
-	nlohmann::json data;
-	data["newAffinity"] = affinity;
+	SerializedValue data(SerializedValueType::OBJECT);
+	data.child("newAffinity", true) = affinity;
 
-	LCU::Network::HTTP::Post(session, "/riotclient/affinity", data.dump());
+	LCU::Network::HTTP::Post(session, "/riotclient/affinity", data.getJSON());
 }
 
 /// <summary>
 /// Get the affinity of the application.
+///	Seems to always return null, commented out.
 /// </summary>
 /// <param name="session">Pointer to a Session object.</param>
-std::string LCU::League::Client::UX::GetAffinity(Session* session)
+/*std::string LCU::League::Client::UX::GetAffinity(Session* session)
 {
-	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "/riotclient/affinity");
-	return nlohmann::json::parse(response)["currentAffinity"];
-}
+	// Parse response
+	rapidjson::Document responseNative;
+	responseNative.Parse(LCU::Network::HTTP::Get(session, "/riotclient/affinity").c_str());
+	LCU::SerializedValue responseLayered(responseNative);
+	return responseLayered.child("currentAffinity").asString();
+}*/
 
 /// <summary>
 /// Get the command line arguments of the application.
@@ -99,8 +103,19 @@ std::string LCU::League::Client::UX::GetAffinity(Session* session)
 /// <returns>String vector of command line arguments.</returns>
 std::vector<std::string> LCU::League::Client::UX::GetCommandLineArgs(Session* session)
 {
-	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "/riotclient/command-line-args");
-	return nlohmann::json::parse(response).get<std::vector<std::string>>();
+	// Parse response
+	rapidjson::Document responseNative;
+	responseNative.Parse(LCU::Network::HTTP::Get(session, "/riotclient/command-line-args").c_str());
+	LCU::SerializedValue responseLayered(responseNative);
+
+	// Turn response to object array
+	std::vector<LCU::SerializedValue> responseArray = responseLayered.asVector();
+	std::vector<std::basic_string<response_char>> object;
+	for (int i = 0; i < responseArray.size(); i++) {
+		object.push_back(responseArray[i].asString());
+	}
+
+	return object;
 }
 
 /// <summary>
@@ -111,8 +126,7 @@ std::vector<std::string> LCU::League::Client::UX::GetCommandLineArgs(Session* se
 void LCU::League::Client::UX::SetCommandLineArgs(Session* session, std::vector<std::string> args)
 {
 	// This function is broken. Refer to issue #2.
-	nlohmann::json data = args;
-	LCU::Network::HTTP::Post(session, "/riotclient/new-args", data.dump());
+	//LCU::Network::HTTP::Post(session, "/riotclient/new-args", data.dump());
 }
 
 /// <summary>
@@ -122,11 +136,16 @@ void LCU::League::Client::UX::SetCommandLineArgs(Session* session, std::vector<s
 /// <returns>Basic system info.</returns>
 LCU::League::Class::Client::BasicSystemInfo LCU::League::Client::UX::GetSystemInfo(Session* session)
 {
-	//nlohmann::json data = nlohmann::json::parse(LCU::Network::HTTP::Get(session, "/riotclient/system-info/v1/basic-info"));
-	LCU::League::Class::Client::BasicSystemInfo sysInfo;
+	// Parse response
+	rapidjson::Document responseNative;
+	responseNative.Parse(LCU::Network::HTTP::Get(session, "/riotclient/system-info/v1/basic-info").c_str());
+	LCU::SerializedValue responseLayered(responseNative);
 
-	//LCU::League::Class::Client::BasicSystemInfo::FromJSON(sysInfo, data);
-	return sysInfo;
+	// Turn response to object
+	LCU::League::Class::Client::BasicSystemInfo object;
+	object.init(responseLayered);
+
+	return object;
 }
 
 /// <summary>

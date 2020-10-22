@@ -19,21 +19,20 @@ namespace LCU {
                     bool active;
                     std::string inactiveDate;
                     int maxQuantity;
-                    // std::vector<LolStoreItemCost> prices
+                    //std::vector<LolStoreItemCost> prices
                     std::string releaseDate;
 
                     std::vector<SerializedObjectValue> GetSerializationData() {
                         return {
-                           
+                            {SerializedValueType::NUMBER, "itemId", &itemId},
+                            {SerializedValueType::STRING, "inventoryType", &inventoryType},
+                            {SerializedValueType::STRING, "iconUrl", &iconUrl},
+                            {SerializedValueType::BOOL, "active", &active},
+                            {SerializedValueType::STRING, "inactiveDate", &inactiveDate},
+                            {SerializedValueType::NUMBER, "maxQuantity", &maxQuantity},
+                            //{SerializedValueType::VECTOR, "prices", &prices},
+                            {SerializedValueType::STRING, "releaseDate", &releaseDate},
                         };
-                    }
-
-                    static void FromJSON(LolStoreCatalogItem& item, nlohmann::json input) {
-                    }
-
-                    nlohmann::json ToJSON() {
-                        nlohmann::json output;
-                        return output;
                     }
 
                     const char* GetClassReadableName() {

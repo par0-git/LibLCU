@@ -1,12 +1,12 @@
 #include "HTTP.hpp"
-std::vector<std::pair<std::basic_string<unsigned char>, CURL*>> LCU::Network::HTTP::Buffer::bfGET;
+std::vector<std::pair<std::basic_string<response_char>, CURL*>> LCU::Network::HTTP::Buffer::bfGET;
 
 size_t LCU::Network::HTTP::Buffer::GET_WriteCallback(void* contents, size_t size, size_t nmemb, void* userdata)
 {
 	size_t len = size * nmemb; // "size" is always 1
 
 	// append contents into buffer (userdata)
-	((std::basic_string<unsigned char>*)userdata)->append((unsigned char*)contents, len);
+	((std::basic_string<response_char>*)userdata)->append((response_char*)contents, len);
 
 	// return size of contents
 	return len;
@@ -15,10 +15,10 @@ size_t LCU::Network::HTTP::Buffer::GET_WriteCallback(void* contents, size_t size
 void LCU::Network::HTTP::Buffer::CreateBuffer_GET_WriteCallback(CURL* curl)
 {
 	// Add a new buffer object
-	bfGET.push_back(std::pair<std::basic_string<unsigned char>, CURL*>(std::basic_string<unsigned char>(), curl));
+	bfGET.push_back(std::pair<std::basic_string<response_char>, CURL*>(std::basic_string<response_char>(), curl));
 }
 
-std::basic_string<unsigned char>* LCU::Network::HTTP::Buffer::GetBuffer_GET_WriteCallback(CURL* curl, bool repeatOnFail)
+std::basic_string<response_char>* LCU::Network::HTTP::Buffer::GetBuffer_GET_WriteCallback(CURL* curl, bool repeatOnFail)
 {
 	// Loop backwards to get newer buffers first
 	for (int i = (int)bfGET.size() - 1; i >= 0; i--) {
@@ -76,15 +76,15 @@ void LCU::Network::HTTP::GetBare(Session* session, CURL* curl, std::string url, 
 	}
 }
 
-std::basic_string<unsigned char> LCU::Network::HTTP::Get(Session* session, std::string url)
+std::basic_string<response_char> LCU::Network::HTTP::Get(Session* session, std::string url)
 {
 	CURL* curl = session->GetCURLInstance();
 
 	// Get buffer
-	std::basic_string<unsigned char>* buffer = Buffer::GetBuffer_GET_WriteCallback(curl);
+	std::basic_string<response_char>* buffer = Buffer::GetBuffer_GET_WriteCallback(curl);
 	if (!buffer) {
 		LCU::Log::Out(LCU::Log::LogLevel::WARNING, LCU::Log::LogActivity::HTTP, "Could not create a GET buffer.");
-		return std::basic_string<unsigned char>();
+		return std::basic_string<response_char>();
 	}
 	
 	// Clear buffer

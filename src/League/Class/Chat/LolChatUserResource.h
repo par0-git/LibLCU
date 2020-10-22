@@ -29,7 +29,6 @@ namespace LCU {
                     std::string summary;
                     uint64_t time;
                     std::string statusMessage;
-                    std::string lastSeenOnlineTimestamp;
 
                     std::vector<SerializedObjectValue> getSerializationData() {
                         return {
@@ -49,7 +48,6 @@ namespace LCU {
                             {SerializedValueType::STRING, "summary", &summary},
                             {SerializedValueType::NUMBER, "time", &time},
                             {SerializedValueType::STRING, "statusMessage", &statusMessage},
-                            {SerializedValueType::STRING, "lastSeenOnlineTimestamp", &lastSeenOnlineTimestamp},
                         };
                     }
 

@@ -7,14 +7,19 @@
 /// <returns>LolLootPlayerLoot vector</returns>
 std::vector <LCU::League::Class::Loot::LolLootPlayerLoot> LCU::League::Loot::GetPlayerLoot(Session* session)
 {
-	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "lol-loot/v1/player-loot");
-	std::vector<LCU::League::Class::Loot::LolLootPlayerLoot> loot;
+	// Parse response
+	rapidjson::Document responseNative;
+	responseNative.Parse(LCU::Network::HTTP::Get(session, "lol-loot/v1/player-loot").c_str());
+	LCU::SerializedValue responseLayered(responseNative);
 
-	/*for (auto& item : nlohmann::json::parse(response).items()) {
-		LCU::League::Class::Loot::LolLootPlayerLoot object;
-		LCU::League::Class::Loot::LolLootPlayerLoot::FromJSON(object, item.value());
-		loot.push_back(object);
-	}*/
+	// Turn response to object
+	std::vector<LCU::League::Class::Loot::LolLootPlayerLoot> object;
 
-	return loot;
+	for (auto& item : responseLayered.asVector()) {
+		LCU::League::Class::Loot::LolLootPlayerLoot loot;
+		loot.init(item);
+		object.push_back(loot);
+	}
+
+	return object;
 }

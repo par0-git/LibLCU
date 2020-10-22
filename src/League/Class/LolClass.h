@@ -24,13 +24,16 @@ namespace LCU {
 
                 LolBaseClass() {};
 
+                /// <summary>
+                /// Create the class from a serialized value.
+                /// </summary>
+                /// <param name="baseValue">SerializedValue</param>
                 void init(SerializedValue& baseValue) {
                     std::vector<SerializedObjectValue> sData = getSerializationData();
-
                     for (SerializedObjectValue sObjectValue : sData) {
                         try {
-                            SerializedValue& childValue = baseValue.Child(sObjectValue.src);
-                            std::string cc;
+                            SerializedValue& childValue = baseValue.child(sObjectValue.src);
+
                             switch (sObjectValue.type) {
                             case LCU::SerializedValueType::INVALID:
                                 sObjectValue.ptr = NULL;
@@ -39,16 +42,16 @@ namespace LCU {
                                 *(SerializedValue*)sObjectValue.ptr = childValue; // This most likely won't work!
                                 break;
                             case LCU::SerializedValueType::STRING:
-                                *(std::string*)sObjectValue.ptr = childValue.String();
+                                *(std::string*)sObjectValue.ptr = childValue.asString();
                                 break;
                             case LCU::SerializedValueType::NUMBER:
-                                *(int*)sObjectValue.ptr = childValue.Int();
+                                *(int*)sObjectValue.ptr = childValue.asInt();
                                 break;
                             case LCU::SerializedValueType::BOOL:
-                                *(bool*)sObjectValue.ptr = childValue.Bool();
+                                *(bool*)sObjectValue.ptr = childValue.asBool();
                                 break;
                             case LCU::SerializedValueType::VECTOR:
-                                *(std::vector<SerializedValue>*)sObjectValue.ptr = childValue.Vector();
+                                *(std::vector<SerializedValue>*)sObjectValue.ptr = childValue.asVector();
                                 break;
                             default:
                                 sObjectValue.ptr = NULL;
@@ -64,11 +67,54 @@ namespace LCU {
                                 sObjectValue.src
                             );
 
-                            throw LCU::Exception::SerializedObjectFailure(e.reason());
+                            //throw LCU::Exception::SerializedObjectFailure(e.reason());
                         }
                     }
                 }
 
+                /// <summary>
+                /// Serialize the class.
+                /// </summary>
+                /// <returns>SerializedValue</returns>
+                SerializedValue serialize() {
+                    std::vector<SerializedObjectValue> sData = getSerializationData();
+                    SerializedValue sOutput = SerializedValue(SerializedValueType::OBJECT);
+
+                    for (SerializedObjectValue sObjectValue : sData) {
+                        // Get child and create if it doesn't exist
+                        SerializedValue& childValue = sOutput.child(sObjectValue.src, true);
+
+                        // Set child value
+                        switch (sObjectValue.type) {
+                        case LCU::SerializedValueType::INVALID:
+                            childValue = SerializedValueType::INVALID;
+                            break;
+                        case LCU::SerializedValueType::OBJECT:
+                            childValue = *(SerializedValue*)sObjectValue.ptr; // This most likely won't work!
+                            break;
+                        case LCU::SerializedValueType::STRING:
+                            childValue = (*(std::string*)sObjectValue.ptr);
+                            break;
+                        case LCU::SerializedValueType::NUMBER:
+                            childValue = (*(int*)sObjectValue.ptr);
+                            break;
+                        case LCU::SerializedValueType::BOOL:
+                            childValue = (*(bool*)sObjectValue.ptr);
+                            break;
+                        case LCU::SerializedValueType::VECTOR:
+                            childValue = (*(std::vector<SerializedValue>*)sObjectValue.ptr);
+                            break;
+                        default:
+                            sObjectValue.ptr = NULL;
+                        };
+                    }
+                    return sOutput;
+                }
+
+                /// <summary>
+                /// Return a pretty string with info about the class.
+                /// </summary>
+                /// <returns>Pretty string.</returns>
                 std::string pretty() {
                     std::vector<SerializedObjectValue> sData = getSerializationData();
                     std::string typeNames[(int)SerializedValueType::_MAX_] = { "undefined", "object", "string", "number", "bool", "vector" };

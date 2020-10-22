@@ -7,14 +7,19 @@
 /// <returns>LolChatFriendResource vector</returns>
 std::vector<LCU::League::Class::Chat::LolChatFriendResource> LCU::League::Chat::Friends::GetFriends(Session* session)
 {
-	std::basic_string<unsigned char> response = LCU::Network::HTTP::Get(session, "lol-chat/v1/friends");
-	std::vector<LCU::League::Class::Chat::LolChatFriendResource> friends;
+	// Parse response
+	rapidjson::Document responseNative;
+	responseNative.Parse(LCU::Network::HTTP::Get(session, "lol-chat/v1/friends").c_str());
+	LCU::SerializedValue responseLayered(responseNative);
 
-	/*for (auto& item : nlohmann::json::parse(response).items()) {
+	// Turn response to object
+	std::vector<LCU::League::Class::Chat::LolChatFriendResource> object;
+
+	for (auto& item : responseLayered.asVector()) {
 		Class::Chat::LolChatFriendResource user;
-		Class::Chat::LolChatFriendResource::FromJSON(user, item.value());
-		friends.push_back(user);
-	}*/
+		user.init(item);
+		object.push_back(user);
+	}
 
-	return friends;
+	return object;
 }
