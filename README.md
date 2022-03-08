@@ -1,3 +1,6 @@
+# Hold on!
+This library is obsolete at this point and it might not even support the 2022 League Client at the moment. It could be a good learning resource though, so I've made it public : )
+
 # LibLCU
 C++ library that can control (or be) the League Client.
 
